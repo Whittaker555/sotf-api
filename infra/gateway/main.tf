@@ -12,6 +12,10 @@ resource "aws_apigatewayv2_stage" "lambda" {
 
   name        = "$default"
   auto_deploy = true
+  default_route_settings {
+    throttling_burst_limit = 5
+    throttling_rate_limit  = 10
+  }
 }
 
 resource "aws_apigatewayv2_integration" "playlist_api_gateway" {
