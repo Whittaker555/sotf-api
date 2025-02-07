@@ -13,7 +13,7 @@ jobs:
         run: (cd app && yarn)
 
       - name: Build
-        run: (cd api && yarn build)
+        run: (cd app && yarn build)
 
       - name: Zip
         run: (cd app/build && zip -r ../api.zip .)

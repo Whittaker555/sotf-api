@@ -7,7 +7,6 @@ const router = express.Router();
 router.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-
 app.use("/api", auth);
 
 app.use((_req, res, _next): any => {
