@@ -3,7 +3,7 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { PutCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
 const router = Router();
-const client = new DynamoDBClient({profile: "george", region: "eu-west-2"});
+const client = new DynamoDBClient();
 const docClient = DynamoDBDocumentClient.from(client);
 
 router.get("/hello", (req: Request, res: Response) => {
