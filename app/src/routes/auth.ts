@@ -3,26 +3,31 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { PutCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
 const router = Router();
-const client = new DynamoDBClient();
+const client = new DynamoDBClient({profile: "george", region: "eu-west-2"});
 const docClient = DynamoDBDocumentClient.from(client);
 
 router.get("/hello", (req: Request, res: Response) => {
   res.json("hello again");
 });
 
-router.post("/user", (req: Request, res: Response) => {
-  console.log(req.body)
-  const { userId, playlistId } = req.body;
-  const command = new PutCommand({
-    TableName: "sotf_users",
-    Item: {
-      userId: userId,
-      playlistId: playlistId
-    },
-  });
+router.post("/user", async (req: Request, res: Response) => {
+  try {
+    console.log("Request body:", req.body);
+    const { userId, playlistId } = req.body;
 
-  docClient.send(command)
-  res.json("hello again");
+    const newItem = { userId, playlistId };
+
+    const command = new PutCommand({
+      TableName: "sotf_users",
+      Item: newItem,
+    });
+
+    await docClient.send(command);
+    res.status(200).json(newItem);
+  } catch (error) {
+    console.error("Error inserting item into DynamoDB:", error);
+    res.status(500).json({ error: "Failed to insert user" });
+  }
 });
 
 export default router;
