@@ -13,6 +13,10 @@ provider "aws" {
   profile = "george"
 }
 
+module "database"{
+  source = "./dynamo"
+}
+
 module "storage" {
   source      = "./s3"
   bucket_name = "${var.app_name}-bucket"
