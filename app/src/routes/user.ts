@@ -11,6 +11,15 @@ router.post("/user", async (req: Request, res: Response) => {
     console.log("Request body:", req.body);
     const { userId, playlistId } = req.body;
 
+    if (!userId) {
+      res.status(400).json({ error: "User ID is required" });
+      return;
+    }
+    if (!playlistId) {
+      res.status(400).json({ error: "Playlist ID is required" });
+      return;
+    }
+
     const newItem = { userId, playlistId };
 
     const command = new PutCommand({
