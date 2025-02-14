@@ -1,7 +1,7 @@
 // tests/routes/userRouter.test.ts
 import request from "supertest";
 import express from "express";
-import userRouter from "../../src/routes/user";
+import userRouter from "../../api/routes/user";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
 jest.mock("@aws-sdk/lib-dynamodb", () => {
@@ -26,7 +26,7 @@ describe("userRouter", () => {
     app.use(express.json()); // parse JSON bodies
     app.use("/", userRouter); // mount your router at root
   });
-  
+
   it("POST / returns 400 and does NOT call DynamoDB if userId is missing", async () => {
     // Missing userId
     const invalidUserData = { playlistId: "playlistXYZ" };
@@ -70,4 +70,3 @@ describe("userRouter", () => {
     expect(docClientInstance.send).toHaveBeenCalledTimes(1);
   });
 });
-

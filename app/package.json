@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "dev": "nodemon src/index.ts",
-    "build": "rm -rf build/ && prettier --write src/ && tsc && cp -r node_modules build/",
+    "start": "ts-node src/api/index.ts",
+    "dev": "nodemon src/api/index.ts",
+    "build": "rm -rf build/ && prettier --write src/api && tsc && cp -r node_modules build/",
     "serve": "node dist/index.js",
     "test": "jest",
     "test:watch": "jest --watch",
