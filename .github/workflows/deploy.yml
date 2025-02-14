@@ -21,8 +21,9 @@ jobs:
       - name: Deploy to AWS
         uses: appleboy/lambda-action@v0.1.9
         with:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY_ID }}
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_KEY_ID }}
           aws_region: ${{ secrets.AWS_REGION }}
           function_name: sotf-api
           zip_file: app/api.zip
+          handler: src/api/index.handler 

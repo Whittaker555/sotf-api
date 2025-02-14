@@ -7,8 +7,8 @@ resource "aws_lambda_function" "playlist_api_lambda_func" {
   s3_bucket     = data.aws_s3_bucket.storage_bucket.id
   s3_key        = var.storage_key
 
-  runtime = "nodejs20.x"
-  handler = "index.handler"
+  runtime = "nodejs18.x"
+  handler       = "src/api/index.handler"
 
   role = aws_iam_role.lambda_exec.arn
 }

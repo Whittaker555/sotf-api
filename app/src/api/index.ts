@@ -23,4 +23,4 @@ app.use((_req, res, _next): any => {
 //   console.log(`Server is running. http://localhost:${PORT}`);
 // });
 
-module.exports.handler = serverless(app);
+export const handler = serverless(app);
