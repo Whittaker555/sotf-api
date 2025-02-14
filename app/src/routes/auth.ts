@@ -6,10 +6,6 @@ const router = Router();
 const client = new DynamoDBClient();
 const docClient = DynamoDBDocumentClient.from(client);
 
-router.get("/hello", (req: Request, res: Response) => {
-  res.json("hello again");
-});
-
 router.post("/user", async (req: Request, res: Response) => {
   try {
     console.log("Request body:", req.body);
