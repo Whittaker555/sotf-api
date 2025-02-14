@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import auth from "./routes/auth";
+import user from "./routes/user";
 import cors from "cors";
 const serverless = require("serverless-http");
 
@@ -8,7 +8,7 @@ const router = express.Router();
 router.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
-app.use("/api", auth);
+app.use("/api/user", user);
 
 app.use((_req, res, _next): any => {
   const error: any = new Error("Not Found");

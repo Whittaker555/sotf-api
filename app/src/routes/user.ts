@@ -6,7 +6,7 @@ const router = Router();
 const client = new DynamoDBClient();
 const docClient = DynamoDBDocumentClient.from(client);
 
-router.post("/user", async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
   try {
     console.log("Request body:", req.body);
     const { userId, playlistId } = req.body;

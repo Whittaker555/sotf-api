@@ -27,11 +27,11 @@ describe("userRouter", () => {
     app.use("/", userRouter); // mount your router at root
   });
   
-  it("POST /user returns 400 and does NOT call DynamoDB if userId is missing", async () => {
+  it("POST / returns 400 and does NOT call DynamoDB if userId is missing", async () => {
     // Missing userId
     const invalidUserData = { playlistId: "playlistXYZ" };
 
-    const res = await request(app).post("/user").send(invalidUserData);
+    const res = await request(app).post("/").send(invalidUserData);
     expect(res.status).toBe(400);
     expect(res.body).toEqual({ error: "User ID is required" });
 
@@ -41,11 +41,11 @@ describe("userRouter", () => {
     expect(docClientInstance.send).not.toHaveBeenCalled();
   });
 
-  it("POST /user returns 400 and does NOT call DynamoDB if playlistId is missing", async () => {
+  it("POST / returns 400 and does NOT call DynamoDB if playlistId is missing", async () => {
     // Missing userId
     const invalidUserData = { userId: "user123" };
 
-    const res = await request(app).post("/user").send(invalidUserData);
+    const res = await request(app).post("/").send(invalidUserData);
     expect(res.status).toBe(400);
     expect(res.body).toEqual({ error: "Playlist ID is required" });
 
@@ -55,10 +55,10 @@ describe("userRouter", () => {
     expect(docClientInstance.send).not.toHaveBeenCalled();
   });
 
-  it("POST /user should insert a user into DynamoDB", async () => {
+  it("POST / should insert a user into DynamoDB", async () => {
     const userData = { userId: "user123", playlistId: "playlistXYZ" };
 
-    const res = await request(app).post("/user").send(userData);
+    const res = await request(app).post("/").send(userData);
     expect(res.status).toBe(200);
     expect(res.body).toEqual(userData);
 
