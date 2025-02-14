@@ -13,7 +13,7 @@ provider "aws" {
   profile = "george"
 }
 
-module "database"{
+module "database" {
   source = "./dynamo"
 }
 
@@ -22,8 +22,8 @@ module "storage" {
   bucket_name = "${var.app_name}-bucket"
 }
 
-module "lambda" {
-  depends_on     = [module.storage]
+module "api" {
+  depends_on     = [module.storage, module.database]
   source         = "./lambda"
   function_name  = "${var.app_name}-api"
   storage_bucket = module.storage.bucket_name
@@ -31,8 +31,8 @@ module "lambda" {
 }
 
 module "api-gateway" {
-  depends_on           = [module.lambda]
+  depends_on           = [module.api]
   source               = "./gateway"
   gateway_name         = "${var.app_name}-gateway"
-  lambda_function_name = module.lambda.lambda_function_name
+  lambda_function_name = module.api.lambda_function_name
 }

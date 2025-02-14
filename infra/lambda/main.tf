@@ -34,8 +34,11 @@ resource "aws_iam_role" "lambda_exec" {
   })
 }
 
-data "aws_dynamodb_table" "database" {
+data "aws_dynamodb_table" "users_database" {
   name = "sotf_users"
+}
+data "aws_dynamodb_table" "playlist_database" {
+  name = "sotf_playlists"
 }
 
 resource "aws_iam_policy" "lambda_policy" {
@@ -53,7 +56,8 @@ resource "aws_iam_policy" "lambda_policy" {
           "dynamodb:DeleteItem"
         ],
         Resource = [
-          data.aws_dynamodb_table.database.arn
+          data.aws_dynamodb_table.users_database.arn,
+          data.aws_dynamodb_table.playlist_database.arn
         ]
       }
     ]
