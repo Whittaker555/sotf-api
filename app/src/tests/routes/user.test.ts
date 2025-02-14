@@ -69,4 +69,30 @@ describe("userRouter", () => {
       .results[0].value;
     expect(docClientInstance.send).toHaveBeenCalledTimes(1);
   });
+
+
+  
+  it("GET / should get the playlists for the user when they exist in the database", async () => {
+    const fakeItems = [
+      { userId: "user123", playlistId: "playlistA" },
+      { userId: "user123", playlistId: "playlistB" },
+    ];
+    let docClientSendMock = (
+      DynamoDBDocumentClient.from as jest.Mock
+    ).mock.results[0].value.send;
+    docClientSendMock.mockResolvedValueOnce({ Items: fakeItems });
+
+    const res = await request(app).get("/user123");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(fakeItems);
+
+    // Check that docClient.send was called with a QueryCommand
+    expect(docClientSendMock).toHaveBeenCalledTimes(1);
+    expect(docClientSendMock.mock.calls[0][0].input).toMatchObject({
+      TableName: "sotf_users",
+      KeyConditionExpression: "userId = :uid",
+      ExpressionAttributeValues: { ":uid": "user123" },
+    });
+  });
 });
