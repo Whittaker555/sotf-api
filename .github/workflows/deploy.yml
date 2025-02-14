@@ -30,4 +30,4 @@ jobs:
           aws_region: ${{ secrets.AWS_REGION }}
           function_name: sotf-api
           zip_file: app/api.zip
-          handler: src/api/index.handler 
+          handler: api/index.handler 
