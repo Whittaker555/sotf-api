@@ -1,6 +1,10 @@
 import { Router, Request, Response } from "express";
 import { DynamoDBClient, QueryCommand } from "@aws-sdk/client-dynamodb";
-import { PutCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import {
+  PutCommand,
+  DeleteCommand,
+  DynamoDBDocumentClient,
+} from "@aws-sdk/lib-dynamodb";
 
 const router = Router();
 const client = new DynamoDBClient();
@@ -65,5 +69,33 @@ router.get("/:userId", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to fetch user playlists" });
   }
 });
+
+router.delete(
+  "/:userId/:playlistId",
+  async (req: Request, res: Response) => {
+    const { userId, playlistId } = req.params;
+
+    if (!userId) {
+      res.status(400).json({ error: "User ID is required" });
+      return;
+    }
+    if (!playlistId) {
+      res.status(400).json({ error: "Playlist ID is required" });
+      return;
+    }
+
+    try {
+      const command = new DeleteCommand({
+        TableName: "sotf_users",
+        Key: { userId, playlistId },
+      });
+      await docClient.send(command);
+      res.status(200).json({ userId, playlistId });
+    } catch (error) {
+      console.error("Error deleting user playlist:", error);
+      res.status(500).json({ error: "Failed to delete user playlist" });
+    }
+  }
+);
 
 export default router;

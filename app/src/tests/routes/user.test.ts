@@ -95,4 +95,21 @@ describe("userRouter", () => {
       ExpressionAttributeValues: { ":uid": "user123" },
     });
   });
+
+  it("DELETE /:userId/:playlistId should delete the playlist for the user", async () => {
+    const docClientSendMock = (
+      DynamoDBDocumentClient.from as jest.Mock
+    ).mock.results[0].value.send;
+
+    const res = await request(app).delete("/user123/playlistXYZ");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ userId: "user123", playlistId: "playlistXYZ" });
+
+    expect(docClientSendMock).toHaveBeenCalledTimes(1);
+    expect(docClientSendMock.mock.calls[0][0].input).toMatchObject({
+      TableName: "sotf_users",
+      Key: { userId: "user123", playlistId: "playlistXYZ" },
+    });
+  });
 });
